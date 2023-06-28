@@ -5,13 +5,6 @@
 // time-block containing the button that was clicked? How might the id be
 // useful when saving the description in local storage?
 
-const saveButtonHandler = function () {
-  let description = $(".saveBtn").siblings(".description").val();
-  let timeOfDay = $(".time-block").attr("id");
-  console.log(description);
-  localStorage.setItem(timeOfDay, description);
-};
-
 let timeCompare = function () {
   let currentTime = dayjs().hour();
 
@@ -39,9 +32,12 @@ let timeCompare = function () {
 // the values of the corresponding textarea elements. HINT: How can the id
 // attribute of each time-block be used to do this?
 
-$(".btn").on("click", saveButtonHandler);
+$(".saveBtn").on("click", function () {
+  let description = $(this).siblings(".description").val();
+  let timeOfDay = $(this).parent().attr("id");
 
-// TODO: Add code to display the current date in the header of the page.
+  localStorage.setItem(timeOfDay, description);
+});
 
 $("#currentDay")
   .append("<h2></h2>")
@@ -49,12 +45,12 @@ $("#currentDay")
 
 timeCompare();
 
-// function renderText() {
-//   $(".time-block").each(function () {
-//     for (const taskText of $(".time-block textarea")) {
-//       taskText.text(localStorage.getItem(description));
-//     }
-//   });
-// }
+function renderText() {
+  $(".time-block").each(function () {
+    $(this)
+      .children(".description")
+      .val(localStorage.getItem($(this).attr("id")));
+  });
+}
 
-// renderText();
+renderText();
