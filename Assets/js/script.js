@@ -34,9 +34,7 @@ $(".saveBtn").on("click", function () {
 
 // adds a display for the current date and time in the header
 
-$("#currentDay")
-  .append("<h2></h2>")
-  .text(dayjs().format("dddd, D MMM. h:mm A"));
+$("#currentDay").text(dayjs().format("dddd, D MMMM h:mm A"));
 
 // iterates through each description box of each time block and adds in the value of the corresponding object from local storage where the key equals the time
 
