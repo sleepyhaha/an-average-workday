@@ -1,16 +1,4 @@
-// TODO: Add a listener for click events on the save button. This code should
-// use the id in the containing time-block as a key to save the user input in
-// local storage. HINT: What does `this` reference in the click listener
-// function? How can DOM traversal be used to get the "hour-x" id of the
-// time-block containing the button that was clicked? How might the id be
-// useful when saving the description in local storage?
-
-const saveButtonHandler = function () {
-  let description = $(".saveBtn").siblings(".description").val();
-  let timeOfDay = $(".time-block").attr("id");
-  console.log(description);
-  localStorage.setItem(timeOfDay, description);
-};
+// function compares the current time using dayjs to the ID of the entire time block div to determine whether the time block is in the past, present or future.
 
 let timeCompare = function () {
   let currentTime = dayjs().hour();
@@ -35,26 +23,32 @@ let timeCompare = function () {
   });
 };
 
-// TODO: Add code to get any user input that was saved in localStorage and set
-// the values of the corresponding textarea elements. HINT: How can the id
-// attribute of each time-block be used to do this?
+// event listener for each save button and saves the description and time of block into local storage with the time as the key and the description as the value
 
-$(".btn").on("click", saveButtonHandler);
+$(".saveBtn").on("click", function () {
+  let description = $(this).siblings(".description").val();
+  let timeOfDay = $(this).parent().attr("id");
 
-// TODO: Add code to display the current date in the header of the page.
+  localStorage.setItem(timeOfDay, description);
+});
+
+// adds a display for the current date and time in the header
 
 $("#currentDay")
   .append("<h2></h2>")
   .text(dayjs().format("dddd, D MMM. h:mm A"));
 
+// iterates through each description box of each time block and adds in the value of the corresponding object from local storage where the key equals the time
+
+function renderText() {
+  $(".time-block").each(function () {
+    $(this)
+      .children(".description")
+      .val(localStorage.getItem($(this).attr("id")));
+  });
+}
+
+// runs functions on load
+
 timeCompare();
-
-// function renderText() {
-//   $(".time-block").each(function () {
-//     for (const taskText of $(".time-block textarea")) {
-//       taskText.text(localStorage.getItem(description));
-//     }
-//   });
-// }
-
-// renderText();
+renderText();
